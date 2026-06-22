@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>雷竞技 · 简明信息页</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background-color: #f7f8fa;
+      color: #1e2024;
+      line-height: 1.6;
+    }
+
+    /* 深色头图 ———— 居中卡片包裹视觉 */
+    .hero {
+      background: linear-gradient(145deg, #0a0d14 0%, #141a26 100%);
+      padding: 3.5rem 1.8rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 40%, rgba(99, 111, 162, 0.08), transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero h1 {
+      font-size: 2.6rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      color: #eaeef3;
+      margin-bottom: 1.1rem;
+    }
+
+    .hero .sub {
+      font-size: 1.1rem;
+      color: #b3bfd0;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* 浅色正文区 */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.8rem 4rem;
+    }
+
+    /* 卡片网格 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.8rem;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 18px;
+      padding: 1.8rem 1.5rem 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: 1px solid #ebedf0;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    .card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.9rem;
+      color: #1e2024;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .card p {
+      font-size: 0.96rem;
+      color: #3f434b;
+      margin-bottom: 0.4rem;
+    }
+
+    .card .tag {
+      display: inline-block;
+      background: #eef1f5;
+      padding: 0.2rem 0.7rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      color: #3f4a5c;
+      margin-top: 0.7rem;
+    }
+
+    /* 强调色链接 */
+    a {
+      color: #2f6b9e;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    a:hover {
+      color: #1a4972;
+      border-bottom: 1px solid #1a4972;
+    }
+
+    /* 适合人群——带彩色侧标 */
+    .audience-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.5rem;
+      margin: 1.5rem 0 2.5rem;
+      padding: 0;
+      list-style: none;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 1.5rem 2rem;
+      border: 1px solid #ebedf0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .audience-list li {
+      position: relative;
+      padding-left: 1.2rem;
+      font-size: 0.98rem;
+      color: #2b2f36;
+      width: calc(50% - 1rem);
+    }
+
+    @media (max-width: 500px) {
+      .audience-list li {
+        width: 100%;
+      }
+    }
+
+    .audience-list li::before {
+      content: "▹";
+      position: absolute;
+      left: 0;
+      color: #2f6b9e;
+      font-weight: bold;
+    }
+
+    /* 提示 / 简明指南块 */
+    .guide-block {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 1.8rem 2rem;
+      margin: 2.5rem 0;
+      border-left: 5px solid #2f6b9e;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .guide-block h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+      color: #141a26;
+    }
+
+    .guide-block p {
+      font-size: 0.97rem;
+      color: #3c404a;
+      margin-bottom: 0.6rem;
+    }
+
+    .guide-block .small-meta {
+      color: #6e7687;
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+    }
+
+    /* 自然链接段落区域 */
+    .link-note {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 1.8rem 2rem;
+      margin: 2rem 0 1.5rem;
+      border: 1px solid #e2e6ec;
+    }
+
+    .link-note p {
+      font-size: 0.98rem;
+      color: #2b2f36;
+    }
+
+    .faq-summary {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 1.5rem 2rem 1.8rem;
+      border: 1px solid #ebedf0;
+      margin-top: 2rem;
+    }
+
+    .faq-summary details {
+      margin-bottom: 0.7rem;
+      border-bottom: 1px solid #edf0f4;
+      padding-bottom: 0.7rem;
+    }
+
+    .faq-summary details:last-of-type {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .faq-summary summary {
+      font-weight: 500;
+      cursor: pointer;
+      color: #1e2024;
+      padding: 0.3rem 0;
+    }
+
+    .faq-summary summary::-webkit-details-marker {
+      color: #2f6b9e;
+    }
+
+    .faq-summary p {
+      margin: 0.5rem 0 0.2rem 1rem;
+      color: #3f434b;
+      font-size: 0.94rem;
+    }
+
+    hr {
+      border: 0;
+      height: 1px;
+      background: #e1e4e9;
+      margin: 2rem 0;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #6e7687;
+      font-size: 0.85rem;
+      margin-top: 3rem;
+      border-top: 1px solid #e1e4e9;
+      padding-top: 1.8rem;
+    }
+
+    /* 简单响应微调 */
+    @media (max-width: 680px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .hero .sub {
+        font-size: 1rem;
+      }
+      .container {
+        padding-left: 1.2rem;
+        padding-right: 1.2rem;
+      }
+      .card-grid {
+        gap: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 深色头图 · 主视觉 -->
+  <header class="hero">
+    <h1>雷竞技 · 简明指南</h1>
+    <p class="sub">以信息卡片的方式快速了解平台用途、适用场景与访问提醒。<br>页面内容侧重真实整理，帮助新用户建立清晰预期。</p>
+  </header>
+
+  <main class="container">
+    
+    <!-- 用途卡片 -->
+    <div class="card-grid">
+      <div class="card">
+        <h3>🎮 赛事追踪</h3>
+        <p>覆盖多种主流竞技项目的实时对阵、赛程与数据回溯。便于关注比赛进程以及战队表现。</p>
+        <span class="tag">数据面板</span>
+      </div>
+      <div class="card">
+        <h3>📊 信息聚合</h3>
+        <p>将赛事资讯、选手动态、版本更新等内容汇总为结构化信息流，减少多平台跳转的麻烦。</p>
+        <span class="tag">资讯中心</span>
+      </div>
+      <div class="card">
+        <h3>⚙️ 互动社区</h3>
+        <p>提供讨论区与赛事预测等轻互动功能，方便用户交流看法、分享策略。一切基于真实赛事信息。</p>
+        <span class="tag">交流板块</span>
+      </div>
+    </div>
+
+    <!-- 适合人群 · 列表形式 -->
+    <h2 style="font-weight: 500; font-size: 1.3rem; margin-bottom: 0.5rem; color: #141a26;">适合哪些用户</h2>
+    <ul class="audience-list">
+      <li>经常观看电竞赛事、希望集中获取赛程的观众</li>
+      <li>对战队数据与历史对阵感兴趣的理性分析型用户</li>
+      <li>寻找讨论空间、想参与赛事话题的爱好者</li>
+      <li>想尝试赛事信息聚合工具、但不愿被过度营销打扰的浏览者</li>
+    </ul>
+
+    <!-- 简明指南 + 访问提醒 -->
+    <div class="guide-block">
+      <h4>📌 访问提醒与使用贴士</h4>
+      <p>· 平台内容基于公开赛事信息整理，不涉及任何形式的博彩或资金交易。请理性使用所有数据与社区功能。</p>
+      <p>· 建议通过主流浏览器访问，并保持页面更新。部分互动模块可能需要注册后使用，个人数据请自行留意保护。</p>
+      <p>· 如果遇到内容显示异常，可尝试清除缓存或稍后重试。页面内的链接与信息仅供参考。</p>
+      <div class="small-meta">—— 以上为常规提醒，实际以平台最新规则为准。</div>
+    </div>
+
+    <!-- 自然链接句子：嵌入 “雷竞技” 文本 -->
+    <div class="link-note">
+      <p>
+        如果你正在寻找一个集中获取赛事信息的地方，可以了解 
+        <a href="https://zhc-rayesports.com">雷竞技</a> 
+        所提供的数据与社区功能。该站以赛事内容聚合为特色，适合从新手到资深观众的不同需求。下文的 FAQ 摘要也总结了部分常见问题。
+      </p>
+    </div>
+
+    <!-- FAQ 摘要 -->
+    <div class="faq-summary">
+      <h3 style="font-weight: 500; font-size: 1.2rem; margin-bottom: 1rem;">常见疑问摘要</h3>
+      
+      <details>
+        <summary>是否需要注册才能浏览内容？</summary>
+        <p>大部分赛事数据与资讯无需注册即可查看。部分讨论区或互动功能可能需要创建账号后使用。</p>
+      </details>
+      <details>
+        <summary>信息更新频率如何？</summary>
+        <p>赛程与比分在比赛期间会实时更新，其他资讯通常每日刷新。具体以实际页面显示为准。</p>
+      </details>
+      <details>
+        <summary>移动端体验是否完善？</summary>
+        <p>页面采用响应式设计，手机与平板均可正常浏览。个别复杂表格在窄屏上会做简化显示。</p>
+      </details>
+      <details>
+        <summary>是否提供数据导出或 API？</summary>
+        <p>当前版本未开放公开 API。所有数据仅供页面内查看，暂不支持批量导出。</p>
+      </details>
+    </div>
+
+    <hr>
+
+    <!-- 结尾再次自然提及，不刻意 -->
+    <p style="font-size: 0.93rem; color: #4a4f5a;">
+      本页为独立介绍页，更多细节可直接前往 
+      <a href="https://zhc-rayesports.com">雷竞技</a> 
+      浏览。页面内容基于公开信息整理，不构成任何推荐或保证。
+    </p>
+
+    <div class="footer-note">
+      <span>信息卡片式介绍 · 仅供了解参考</span>
+    </div>
+  </main>
+
+</body>
+</html>
